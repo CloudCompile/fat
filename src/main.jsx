@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import './styles.css';
 import './liquid.css';
+import GlassSurface from './glass/GlassSurface.jsx';
 
 const GITHUB = 'https://github.com/sneezejayhauser';
 const INSTAGRAM = 'https://www.instagram.com/sneezejayhauser';
@@ -226,12 +227,12 @@ function App() {
               <a className="button button-ghost" href={INSTAGRAM} target="_blank" rel="noreferrer"><Camera size={15} /> @sneezejayhauser</a>
             </div>
           </div>
-          <div className="hero-stats glass-panel">
+          <GlassSurface className="hero-stats" borderRadius={28} tintOpacity={0.24}>
             <HeroStat value={900} suffix="+" label="commits on Lumiverse" active={statsActive} delay={0} />
             <HeroStat value={5100} suffix="★" label="on the Pollinations platform" active={statsActive} delay={90} />
             <HeroStat value={5} suffix="" label="hobbies in the rotation" active={statsActive} delay={180} />
             <HeroStat value={1} suffix="" label="legendary fun fact (find it)" active={statsActive} delay={270} />
-          </div>
+          </GlassSurface>
         </section>
 
         {/* ---------- TICKER ---------- */}
@@ -248,7 +249,7 @@ function App() {
           <p className="section-kicker reveal">ABOUT</p>
           <h2 className="reveal">A person of <em>many lanes.</em></h2>
           <div className="about-grid">
-            <div className="glass-panel about-card reveal">
+            <GlassSurface className="about-card reveal" borderRadius={26} tintOpacity={0.2}>
               <p>
                 CJ splits time between the tennis court, the pool, and a keyboard — and whatever
                 hours are left go straight into anime games and TV. It is a full schedule and
@@ -259,7 +260,7 @@ function App() {
                 a full-stack AI chat suite, plus an MCP server plugged into a 5,100-star
                 generative AI platform. Scroll down, the receipts are there.
               </p>
-            </div>
+            </GlassSurface>
             <div className="glass-panel fact-card reveal" style={{ '--reveal-delay': '120ms' }}>
               <p className="section-kicker">CERTIFIED FUN FACT</p>
               <button className={`fact-seal ${eggOpen ? 'fact-open' : ''}`} onClick={tapEgg} aria-live="polite">
@@ -293,7 +294,7 @@ function App() {
           <h2 className="reveal">Things that <em>shipped.</em></h2>
           <div className="project-grid">
             {PROJECTS.map((p, i) => (
-              <article className={`glass-panel project-card project-${p.accent} reveal`} style={{ '--reveal-delay': `${i * 90}ms` }} key={p.name}>
+              <GlassSurface className={`project-card project-${p.accent} reveal`} borderRadius={26} tintOpacity={0.2} style={{ '--reveal-delay': `${i * 90}ms` }} key={p.name}>
                 <div className="project-top">
                   <span className="project-icon"><p.icon size={20} /></span>
                   <p className="section-kicker">{p.kicker}</p>
@@ -312,7 +313,7 @@ function App() {
                 <a className="project-link" href={p.link} target="_blank" rel="noreferrer">
                   {p.linkLabel} <ArrowUpRight size={14} />
                 </a>
-              </article>
+              </GlassSurface>
             ))}
           </div>
         </section>

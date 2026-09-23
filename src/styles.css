@@ -238,12 +238,31 @@ a { color: inherit; }
   font-size: 15px;
 }
 .hero-actions { display: flex; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
-.hero-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  padding: 8px;
+
+/* ---- real WebGL liquid glass (dashersw/liquid-glass-js) ---- */
+.glass-host { position: relative; }
+.glass-host .glass-surface {
+  position: absolute;
+  inset: 0;
+  display: block;
+  padding: 0;
+  pointer-events: none;
+  z-index: 0;
 }
+.glass-host .glass-surface canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  box-shadow:
+    0 24px 70px #05070f99,
+    inset 0 1px 0 #ffffff2e,
+    inset 0 -1px 0 #ffffff14;
+}
+.glass-host .glass-content { position: relative; z-index: 1; }
+
+.hero-stats { padding: 8px; }
+.hero-stats .glass-content { display: grid; grid-template-columns: 1fr 1fr; }
 .hero-stat {
   display: flex;
   flex-direction: column;
@@ -297,6 +316,8 @@ a { color: inherit; }
   gap: 14px;
 }
 .about-card { padding: 30px; }
+.about-card .glass-content { padding: 30px; }
+.glass-host.about-card { padding: 0; }
 .about-card p { color: var(--muted); line-height: 1.75; margin: 0 0 16px; font-size: 15px; }
 .about-card p:last-child { margin-bottom: 0; }
 .about-card p::first-letter { color: var(--ink); }
@@ -385,10 +406,12 @@ a { color: inherit; }
   gap: 12px;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
 }
-.project-card:hover { transform: translateY(-8px); box-shadow: 0 44px 100px #05070faa, inset 1px 1px 0 #ffffff4d; }
-.project-violet { background: linear-gradient(135deg, #a78bfa24, var(--glass) 45%, #7c3aed14); }
-.project-cyan { background: linear-gradient(135deg, #67e8f920, var(--glass) 45%, #0ea5e914); }
-.project-mint { background: linear-gradient(135deg, #6ee7b71f, var(--glass) 45%, #10b98112); }
+.glass-host.project-card { padding: 0; display: block; }
+.project-card .glass-content { padding: 26px; display: flex; flex-direction: column; gap: 12px; }
+.project-card:hover { transform: translateY(-8px); box-shadow: 0 44px 100px #05070faa; }
+.project-violet .glass-content { background: linear-gradient(135deg, #a78bfa14, transparent 45%, #7c3aed0a); border-radius: 26px; }
+.project-cyan .glass-content { background: linear-gradient(135deg, #67e8f912, transparent 45%, #0ea5e90a); border-radius: 26px; }
+.project-mint .glass-content { background: linear-gradient(135deg, #6ee7b710, transparent 45%, #10b98109); border-radius: 26px; }
 .project-top { display: flex; align-items: center; gap: 12px; }
 .project-top .section-kicker { margin: 0; }
 .project-icon {
