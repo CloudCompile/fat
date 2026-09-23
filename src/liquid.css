@@ -1,0 +1,63 @@
+/* Liquid layer — splash intro + extra glass motion, adapted from Groupwise (randomizer). */
+
+.splash-screen {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(circle at 50% 44%, #101736 0, #0c1230 28%, #0a0d1f 61%, #070912 100%);
+  animation: splash-arrive .8s cubic-bezier(.2,.8,.2,1) both;
+}
+.splash-screen::before, .splash-screen::after {
+  content: ""; position: absolute; border-radius: 50%; pointer-events: none;
+  filter: blur(10px); opacity: .5; mix-blend-mode: screen;
+}
+.splash-screen::before {
+  width: 55vw; height: 45vw; left: -14vw; top: 18%;
+  background: radial-gradient(ellipse, #7c5cff66 0 12%, #4338ca55 38%, transparent 70%);
+  animation: splash-blob-a 9s ease-in-out infinite alternate;
+}
+.splash-screen::after {
+  width: 52vw; height: 42vw; right: -12vw; bottom: 0;
+  background: radial-gradient(ellipse, #2dd4bf55 0 10%, #38bdf844 40%, transparent 70%);
+  animation: splash-blob-b 11s ease-in-out infinite alternate;
+}
+.splash-content {
+  position: relative; z-index: 1; padding: 0; border: 0; background: none; box-shadow: none;
+  display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center;
+}
+.splash-line { margin: 0; opacity: 0; color: #e6eaff; }
+.splash-brand {
+  font: 600 clamp(64px, 14vw, 170px)/.95 'Fraunces', serif; letter-spacing: -.06em;
+  background: linear-gradient(110deg, #8b9dff, #5eead4 55%, #c084fc);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: splash-line-in 2.2s .4s ease-in-out forwards;
+}
+.splash-meta { font: 500 clamp(11px, 1.6vw, 17px) 'DM Mono', monospace; letter-spacing: .18em; animation: splash-line-in 2.2s 3s ease-in-out forwards; }
+.splash-credit { font-size: clamp(13px, 1.9vw, 21px); letter-spacing: .02em; color: #8b93b8; animation: splash-line-in 2.2s 5.8s ease-in-out forwards; }
+.splash-line .splash-letter { opacity: 0; display: inline-block; white-space: pre; animation: splash-letter-in 1.25s both; animation-delay: calc(var(--line-delay, 0ms) + var(--letter-index) * 38ms); }
+.splash-brand { --line-delay: 400ms; }
+.splash-meta { --line-delay: 3000ms; }
+.splash-credit { --line-delay: 5800ms; }
+
+.splash-closing { animation: splash-screen-fade 1.5s ease forwards; }
+.splash-closing .splash-line { animation: none; }
+.splash-closing .splash-line .splash-letter {
+  animation: splash-letter-out .8s cubic-bezier(.6,0,.8,.2) both;
+  animation-delay: calc(var(--letter-index) * 20ms);
+}
+
+@keyframes splash-arrive { from { opacity: 0; } to { opacity: 1; } }
+@keyframes splash-line-in { 0%,100% { opacity: 1; } 10% { opacity: 1; } 90% { opacity: 1; } }
+@keyframes splash-letter-in {
+  0% { opacity: 0; filter: blur(8px); transform: translateY(12px); }
+  45%, 100% { opacity: 1; filter: none; transform: none; }
+}
+@keyframes splash-letter-out { to { opacity: 0; filter: blur(7px); transform: translateY(-12px) scale(.85); } }
+@keyframes splash-screen-fade { from { opacity: 1; } to { opacity: 0; } }
+@keyframes splash-blob-a { to { transform: translate(14%, 12%) rotate(18deg) scale(1.18); } }
+@keyframes splash-blob-b { to { transform: translate(-12%, -10%) rotate(-14deg) scale(1.12); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-screen, .splash-screen::before, .splash-screen::after,
+  .splash-line, .splash-line .splash-letter,
+  .splash-closing, .splash-closing .splash-line .splash-letter { animation: none !important; }
+  .splash-screen { display: none; }
+}
