@@ -454,7 +454,7 @@ export class Container {
         }
         
         color /= totalWeight;
-        color.rgb = color.rgb * 1.18 + 0.035;
+        color.rgb = color.rgb * 1.32 + 0.06;
         
         // Simple vertical gradient
         float gradientPosition = coord.y;
@@ -511,6 +511,13 @@ export class Container {
         vec3 finalTinted = mix(color.rgb, sampledGradient, u_tintOpacity * 0.3);
         color = vec4(finalTinted, color.a);
         
+        // Specular edge highlight: bright rim where light catches the glass edge
+        float specBand = smoothstep(0.0, 14.0, normalizedDistance) * (1.0 - smoothstep(14.0, 42.0, normalizedDistance));
+        color.rgb += vec3(0.55, 0.6, 0.85) * specBand * 0.5;
+        // Top-left light catch
+        float lightCatch = (1.0 - smoothstep(0.0, 0.55, coord.x + coord.y)) * 0.10;
+        color.rgb += vec3(lightCatch);
+
         // Shape mask (rounded rectangle, circle, or pill)
         float maskDistance;
         if (isPill(u_resolution, u_borderRadius)) {
@@ -616,17 +623,17 @@ export class Container {
     // Set uniforms
     gl.uniform2f(resolutionLoc, this.canvas.width, this.canvas.height)
     gl.uniform2f(textureSizeLoc, image.width, image.height)
-    gl.uniform1f(blurRadiusLoc, window.glassControls?.blurRadius || 5.0)
+    gl.uniform1f(blurRadiusLoc, window.glassControls?.blurRadius || 13.0)
     gl.uniform1f(borderRadiusLoc, this.borderRadius)
     gl.uniform1f(warpLoc, this.warp ? 1.0 : 0.0)
-    gl.uniform1f(edgeIntensityLoc, window.glassControls?.edgeIntensity || 0.01)
-    gl.uniform1f(rimIntensityLoc, window.glassControls?.rimIntensity || 0.05)
-    gl.uniform1f(baseIntensityLoc, window.glassControls?.baseIntensity || 0.01)
-    gl.uniform1f(edgeDistanceLoc, window.glassControls?.edgeDistance || 0.15)
+    gl.uniform1f(edgeIntensityLoc, window.glassControls?.edgeIntensity || 0.045)
+    gl.uniform1f(rimIntensityLoc, window.glassControls?.rimIntensity || 0.16)
+    gl.uniform1f(baseIntensityLoc, window.glassControls?.baseIntensity || 0.03)
+    gl.uniform1f(edgeDistanceLoc, window.glassControls?.edgeDistance || 0.3)
     gl.uniform1f(rimDistanceLoc, window.glassControls?.rimDistance || 0.8)
     gl.uniform1f(baseDistanceLoc, window.glassControls?.baseDistance || 0.1)
-    gl.uniform1f(cornerBoostLoc, window.glassControls?.cornerBoost || 0.02)
-    gl.uniform1f(rippleEffectLoc, window.glassControls?.rippleEffect || 0.1)
+    gl.uniform1f(cornerBoostLoc, window.glassControls?.cornerBoost || 0.06)
+    gl.uniform1f(rippleEffectLoc, window.glassControls?.rippleEffect || 0.22)
     gl.uniform1f(tintOpacityLoc, this.tintOpacity)
 
     // Set initial position (will be updated in render loop)

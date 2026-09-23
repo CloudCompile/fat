@@ -11,7 +11,7 @@ export default function GlassSurface({
   children,
   className = '',
   borderRadius = 26,
-  tintOpacity = 0.22,
+  tintOpacity = 0.12,
   style,
 }) {
   const hostRef = useRef(null);

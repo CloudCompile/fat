@@ -227,7 +227,7 @@ function App() {
               <a className="button button-ghost" href={INSTAGRAM} target="_blank" rel="noreferrer"><Camera size={15} /> @sneezejayhauser</a>
             </div>
           </div>
-          <GlassSurface className="hero-stats" borderRadius={28} tintOpacity={0.24}>
+          <GlassSurface className="hero-stats" borderRadius={28} tintOpacity={0.14}>
             <HeroStat value={900} suffix="+" label="commits on Lumiverse" active={statsActive} delay={0} />
             <HeroStat value={5100} suffix="★" label="on the Pollinations platform" active={statsActive} delay={90} />
             <HeroStat value={5} suffix="" label="hobbies in the rotation" active={statsActive} delay={180} />
@@ -249,7 +249,7 @@ function App() {
           <p className="section-kicker reveal">ABOUT</p>
           <h2 className="reveal">A person of <em>many lanes.</em></h2>
           <div className="about-grid">
-            <GlassSurface className="about-card reveal" borderRadius={26} tintOpacity={0.2}>
+            <GlassSurface className="about-card reveal" borderRadius={26} tintOpacity={0.12}>
               <p>
                 CJ splits time between the tennis court, the pool, and a keyboard — and whatever
                 hours are left go straight into anime games and TV. It is a full schedule and
@@ -294,7 +294,7 @@ function App() {
           <h2 className="reveal">Things that <em>shipped.</em></h2>
           <div className="project-grid">
             {PROJECTS.map((p, i) => (
-              <GlassSurface className={`project-card project-${p.accent} reveal`} borderRadius={26} tintOpacity={0.2} style={{ '--reveal-delay': `${i * 90}ms` }} key={p.name}>
+              <GlassSurface className={`project-card project-${p.accent} reveal`} borderRadius={26} tintOpacity={0.12} style={{ '--reveal-delay': `${i * 90}ms` }} key={p.name}>
                 <div className="project-top">
                   <span className="project-icon"><p.icon size={20} /></span>
                   <p className="section-kicker">{p.kicker}</p>
