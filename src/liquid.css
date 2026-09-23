@@ -1,63 +1,180 @@
-/* Liquid layer — splash intro + extra glass motion, adapted from Groupwise (randomizer). */
+/* Hyper-liquid dark glass layer — heavier than the groupwise original. */
 
-.splash-screen {
-  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; overflow: hidden;
-  background: radial-gradient(circle at 50% 44%, #101736 0, #0c1230 28%, #0a0d1f 61%, #070912 100%);
-  animation: splash-arrive .8s cubic-bezier(.2,.8,.2,1) both;
+/* Animated aurora canvas */
+body {
+  background:
+    radial-gradient(ellipse at 12% 6%, #7c3aed2e 0 12%, transparent 38%),
+    radial-gradient(ellipse at 88% 10%, #06b6d42b 0 12%, transparent 36%),
+    radial-gradient(ellipse at 78% 88%, #ec489922 0 12%, transparent 38%),
+    radial-gradient(ellipse at 18% 82%, #10b9811f 0 10%, transparent 34%),
+    radial-gradient(ellipse at 50% 45%, #4f46e514 0 14%, transparent 42%),
+    linear-gradient(150deg, #0a0d1c, #070a14 45%, #0b0f1e);
+  background-attachment: fixed;
 }
-.splash-screen::before, .splash-screen::after {
-  content: ""; position: absolute; border-radius: 50%; pointer-events: none;
-  filter: blur(10px); opacity: .5; mix-blend-mode: screen;
+
+/* Two huge drifting liquid blobs, morphing border-radius like groupwise */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  width: 620px;
+  height: 520px;
+  filter: blur(60px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  animation-duration: 16s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+body::before {
+  left: -180px;
+  top: 16%;
+  background: radial-gradient(ellipse at 36% 30%, #8b5cf6 0 8%, #6d28d9aa 30%, #312e8166 55%, transparent 75%);
+  animation-name: liquid-blob-a;
+}
+body::after {
+  right: -180px;
+  top: 42%;
+  background: radial-gradient(ellipse at 42% 42%, #06b6d4 0 9%, #0e7490aa 30%, #155e7566 55%, transparent 75%);
+  animation-name: liquid-blob-b;
+  animation-delay: -6s;
+}
+@keyframes liquid-blob-a {
+  0%   { transform: translate(-6%, 0) rotate(-18deg) scale(0.92); border-radius: 44% 56% 62% 38%; }
+  50%  { transform: translate(26%, 18%) rotate(48deg) scale(1.22); border-radius: 68% 32% 40% 60%; }
+  100% { transform: translate(8%, 40%) rotate(110deg) scale(0.95); border-radius: 31% 69% 58% 42%; }
+}
+@keyframes liquid-blob-b {
+  0%   { transform: translate(0, 0) rotate(14deg) scale(1); border-radius: 60% 40% 35% 65%; }
+  50%  { transform: translate(-30%, -22%) rotate(-42deg) scale(1.26); border-radius: 30% 70% 60% 40%; }
+  100% { transform: translate(-10%, -48%) rotate(-105deg) scale(0.9); border-radius: 70% 30% 42% 58%; }
+}
+
+/* Heavier glass: deeper blur, stronger saturation, brighter insets */
+.glass-panel {
+  backdrop-filter: blur(38px) saturate(240%) brightness(1.08);
+  -webkit-backdrop-filter: blur(38px) saturate(240%) brightness(1.08);
+}
+.topbar {
+  backdrop-filter: blur(42px) saturate(240%);
+  -webkit-backdrop-filter: blur(42px) saturate(240%);
+}
+.button {
+  backdrop-filter: blur(28px) saturate(240%);
+  -webkit-backdrop-filter: blur(28px) saturate(240%);
+}
+
+/* Moving highlight that follows the cursor spotlight across panels */
+.glass-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 0%),
+    #ffffff14, transparent 60%
+  );
+}
+
+/* Splash screen — groupwise letter-by-letter, re-themed dark */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 42%, #1e1b4b 0, #0f0c29 45%, #070a14 100%);
+  animation: splash-arrive 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.splash-screen::before,
+.splash-screen::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(70px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
 }
 .splash-screen::before {
-  width: 55vw; height: 45vw; left: -14vw; top: 18%;
-  background: radial-gradient(ellipse, #7c5cff66 0 12%, #4338ca55 38%, transparent 70%);
-  animation: splash-blob-a 9s ease-in-out infinite alternate;
+  width: 60vw; height: 48vw;
+  left: -16vw; top: 8%;
+  background: radial-gradient(ellipse, #7c3aed88 0 15%, transparent 70%);
+  animation: splash-blob 8s ease-in-out infinite alternate;
 }
 .splash-screen::after {
-  width: 52vw; height: 42vw; right: -12vw; bottom: 0;
-  background: radial-gradient(ellipse, #2dd4bf55 0 10%, #38bdf844 40%, transparent 70%);
-  animation: splash-blob-b 11s ease-in-out infinite alternate;
+  width: 55vw; height: 44vw;
+  right: -14vw; bottom: -6%;
+  background: radial-gradient(ellipse, #06b6d477 0 14%, transparent 70%);
+  animation: splash-blob 10s -4s ease-in-out infinite alternate-reverse;
+}
+@keyframes splash-blob {
+  to { transform: translate(10%, 12%) rotate(16deg) scale(1.15); }
 }
 .splash-content {
-  position: relative; z-index: 1; padding: 0; border: 0; background: none; box-shadow: none;
-  display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  text-align: center;
 }
-.splash-line { margin: 0; opacity: 0; color: #e6eaff; }
+.splash-line { margin: 0; }
 .splash-brand {
-  font: 600 clamp(64px, 14vw, 170px)/.95 'Fraunces', serif; letter-spacing: -.06em;
-  background: linear-gradient(110deg, #8b9dff, #5eead4 55%, #c084fc);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  animation: splash-line-in 2.2s .4s ease-in-out forwards;
+  font: 600 clamp(72px, 16vw, 180px)/0.9 'Fraunces', serif;
+  letter-spacing: -0.06em;
+  background: linear-gradient(110deg, #fff, #c4b5fd 45%, #67e8f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
-.splash-meta { font: 500 clamp(11px, 1.6vw, 17px) 'DM Mono', monospace; letter-spacing: .18em; animation: splash-line-in 2.2s 3s ease-in-out forwards; }
-.splash-credit { font-size: clamp(13px, 1.9vw, 21px); letter-spacing: .02em; color: #8b93b8; animation: splash-line-in 2.2s 5.8s ease-in-out forwards; }
-.splash-line .splash-letter { opacity: 0; display: inline-block; white-space: pre; animation: splash-letter-in 1.25s both; animation-delay: calc(var(--line-delay, 0ms) + var(--letter-index) * 38ms); }
-.splash-brand { --line-delay: 400ms; }
-.splash-meta { --line-delay: 3000ms; }
-.splash-credit { --line-delay: 5800ms; }
-
-.splash-closing { animation: splash-screen-fade 1.5s ease forwards; }
-.splash-closing .splash-line { animation: none; }
-.splash-closing .splash-line .splash-letter {
-  animation: splash-letter-out .8s cubic-bezier(.6,0,.8,.2) both;
-  animation-delay: calc(var(--letter-index) * 20ms);
+.splash-meta {
+  font: 500 clamp(10px, 1.4vw, 14px) 'DM Mono', monospace;
+  letter-spacing: 0.3em;
+  color: #9aa3c0;
 }
-
+.splash-credit {
+  font: 500 clamp(12px, 1.6vw, 16px) 'DM Mono', monospace;
+  letter-spacing: 0.12em;
+  color: #67e8f9;
+}
+.splash-letter {
+  display: inline-block;
+  white-space: pre;
+  opacity: 0;
+  animation: splash-letter-in 0.9s both;
+  animation-delay: calc(var(--line-delay, 0ms) + var(--letter-index) * 45ms);
+}
+.splash-brand { --line-delay: 300ms; }
+.splash-meta { --line-delay: 1700ms; }
+.splash-credit { --line-delay: 2900ms; }
+.splash-closing { animation: splash-screen-fade 1s ease forwards; }
+.splash-closing .splash-letter {
+  animation: splash-letter-out 0.6s cubic-bezier(0.6, 0, 0.8, 0.2) both;
+  animation-delay: calc(var(--letter-index) * 18ms);
+}
 @keyframes splash-arrive { from { opacity: 0; } to { opacity: 1; } }
-@keyframes splash-line-in { 0%,100% { opacity: 1; } 10% { opacity: 1; } 90% { opacity: 1; } }
 @keyframes splash-letter-in {
-  0% { opacity: 0; filter: blur(8px); transform: translateY(12px); }
-  45%, 100% { opacity: 1; filter: none; transform: none; }
+  0% { opacity: 0; filter: blur(10px); transform: translateY(16px) scale(1.1); }
+  100% { opacity: 1; filter: none; transform: none; }
 }
-@keyframes splash-letter-out { to { opacity: 0; filter: blur(7px); transform: translateY(-12px) scale(.85); } }
-@keyframes splash-screen-fade { from { opacity: 1; } to { opacity: 0; } }
-@keyframes splash-blob-a { to { transform: translate(14%, 12%) rotate(18deg) scale(1.18); } }
-@keyframes splash-blob-b { to { transform: translate(-12%, -10%) rotate(-14deg) scale(1.12); } }
+@keyframes splash-letter-out {
+  to { opacity: 0; filter: blur(8px); transform: translateY(-14px) scale(0.85); }
+}
+@keyframes splash-screen-fade { to { opacity: 0; visibility: hidden; } }
 
 @media (prefers-reduced-motion: reduce) {
+  body::before, body::after,
   .splash-screen, .splash-screen::before, .splash-screen::after,
-  .splash-line, .splash-line .splash-letter,
-  .splash-closing, .splash-closing .splash-line .splash-letter { animation: none !important; }
+  .splash-letter, .glass-panel::before {
+    animation: none !important;
+  }
   .splash-screen { display: none; }
 }
